@@ -1,28 +1,36 @@
 #!/bin/bash
-echo "Geben Sie den Namen der Datei ein, für die Sie ein Backup erstellen möchten"
-read DATEINAME ORT
-# if [ "$#" -ne 2 ]; then
-#     echo $#
-    # echo "Sie müssen eine vorhandene Datei angeben";
-    # echo "UND einen Ort wo das Backup gespeichert werden soll";
-# else
-    if [ -z "$DATEINAME" ];
+
+###Schritt 1  Argumente auslesen
+if [ "$#" -ne 2 ]; then
+    echo $#
+    echo "Sie müssen eine vorhandene Datei angeben";
+    echo "UND einen Ort wo das Backup gespeichert werden soll";
+else 
+    if [ -z "$1" ];
             then echo "Bitte geben Sie den Namen einer Datei ein";
         else  echo "Datei wird gesucht...";
-            if [ -f "$DATEINAME" ]
-                 then echo "Die Datei $DATEINAME existert und es wird versucht sie im Ordner $ORT zu speichern..."
+            sleep 1
+            if [ -f "$1" ]
+                 then echo "Die Datei $1 existert und es wird versucht sie im Ordner $2 zu speichern..."
+    sleep 1
     fi
     fi
+
+    FILE=${1%.*}
+    EXTN=${1##$FILE}
+    cp $FILE{$EXTN,-$(date '+%d-%m-%y')$EXTN}
+
+    Neue_Datei=$FILE-$(date '+%d-%m-%y')$EXTN
+
+    # echo $Neue_Datei
+if [ ! -d $2 ]; then
+  echo "Der Ordner $2 existiert nicht"
+  sleep 2
+  echo "Es wird ein neuer Ordner mit dem Namen $2 erstellt..."
+  mkdir -p $2;
+  echo "Der Ordner wurde erstellt und die Datei wurde gespeichert"
+    else echo "Die Datei wird im Ordner $2 gespeichert..."
+mv $Neue_Datei /$2
+
 fi
-
-    FILE=${DATEINAME%.*}
-    EXTN=${DATEINAME##$FILE}
-    cp $FILE{$EXTN,-$(date '+%Y-%m-%d')$EXTN}
-
-if [ ! -d $ORT ]; then
-  echo "Der Ordner $ORT existiert nicht"
-  echo "Es wird ein neuer Ordner mit dem Namen $ORT erstellt"
-  mkdir -p $ORT;
-    else echo "Die Datei wird im Ordner $ORT gespeichert..."
-
 fi
