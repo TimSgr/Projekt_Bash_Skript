@@ -36,7 +36,7 @@ else
     mkdir -p $2;
     echo "Der Ordner wurde erstellt und die Datei wurde gespeichert"
     else echo "Der Ordner $2 existiert und die Datei wurde darin gespeichert..."
-    mv $Neue_Datei ./$2
 fi
 fi
 fi
+mv $Neue_Datei ./$2
