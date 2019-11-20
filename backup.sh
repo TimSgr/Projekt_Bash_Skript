@@ -41,7 +41,7 @@ else
 
 ###Schritt 4 Ordner wird erstellt wenn er noch nicht vorhanden ist und die DAtei wird dahin verschoben
 
-    echo "Es wird ein neuer Ordner mit dem Namen $2 erstellt..."
+    echo "Es wird ein neuer Ordner mit dem Namen $2 erstellt..." 
     mkdir -p $2;
     tar -rvf $Neue_Datei.tar $Neue_Datei
     echo "Der Ordner wurde erstellt und die Datei wurde gespeichert"
