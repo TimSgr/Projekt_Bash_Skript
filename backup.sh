@@ -8,68 +8,76 @@ if [ "$#" -lt 2 ]; then
     exit 1
 else
 
+temp_dir=$(mktemp -d)
 ###Schritt 2 Datum einfügen
-Anzahl="$(("$#"-1))"
+ARG_COUNT="$(("$#"-1))"
 my_array=($*)
     Array_size=${#my_array[@]}
-    zahl=${my_array[$Anzahl]}
-    i=0
-while [ $i -le $(($Anzahl-1)) ]; do
-    nummer=${my_array[$i]}
+    TARGET_DIR=${my_array[$ARG_COUNT]}
+i=0
+while [[ $i -le $(($ARG_COUNT-1)) ]] 
+do 
+    DATEI=${my_array[$i]}
 	
-    FILE=${nummer%.*}
-    EXTN=${nummer##$FILE}
+    FILE=${DATEI%.*}
+    EXTN=${DATEI##$FILE}
     cp $FILE{$EXTN,-$(date '+%d-%m-%y')$EXTN}
-    Neue_Datei=$FILE-$(date '+%d-%m-%y')$EXTN
+    NEUE_DATEI=$FILE-$(date '+%d-%m-%y')$EXTN
 
-    if [ -z "$nummer" ];
-            then echo "Bitte geben Sie den Namen einer Datei ein";
+    if [ -z "$DATEI" ];
+    then 
+        echo "Bitte geben Sie den Namen einer Datei ein"
         else  echo "Datei wird gesucht...";
-            sleep 1
-           if [ -z "$EXTN" ]
+            #sleep 1
+           if [[ -z "$EXTN" ]]
                  then echo "Überprüfen Sie Ihre Eingabe erneut"
-            else if [ -f "$nummer" ]
-                 then echo "Die Datei $nummer existert und es wird versucht sie im Ordner $zahl zu speichern..."
-                 sleep 2
-                      if [ -d $zahl ]; then  
-                         echo "Der Ordner $zahl existiert... und die Datei wurde darin gespeichert"
-                         tar -rvf $Neue_Datei.tar 
-                         mv $Neue_Datei.tar ./$zahl
-                         rm $Neue_Datei
-                         #echo "$Neue_Datei.tar"
+            else if [[ -f "$DATEI" ]]
+                 then echo "Die Datei $DATEI existert und es wird versucht sie im Ordner $TARGET_DIR.tar.gz zu speichern..."
+                 #sleep 2
+                      if [ -d "$TARGET_DIR.tar.gz" ]; then  
+                         echo "Der Ordner $TARGET_DIR.tar.gz existiert... und die Datei wurde darin gespeichert"
+                     #   tar -czf $T-$(date '+%d-%m-%y').tar.gz $NEUE_DATEI  
+                         mv $NEUE_DATEI ${temp_dir/temp/}
+                         #rm $NEUE_DATEI
+                         rm 
+                         #echo "$NEUE_DATEI.tar"
                     
-    sleep 1
-    fi
-    fi
-    fi
+    #sleep 1
+                        fi
+                fi  
+            fi
     fi
 
 ###Schritt 3 Neue Datei wird einer Variable zugewiesen und Existens des Ordners wird überprüft
 
     
-    #echo $Neue_Datei
-    if [[ $zahl == *['!''?''='@\$%^\&*()_+]* ]]
+    #echo $NEUE_DATEI
+    if [[ $TARGET_DIR == *['!''?''='@\$%^\&*()_+]* ]]
         then echo "Unzulässiger Ordnername";
     else
 
-        if [ ! -d $zahl ]; then
-        echo "Der Ordner $zahl existiert nicht"
-        sleep 2
-
+        #sleep 2
+                #if [ ! -d "$TARGET_DIR.tar.gz" ]
+                #then mkdir $TARGET_DIR.tar.gz
+               
+                
 ###Schritt 4 Ordner wird erstellt wenn er noch nicht vorhanden ist und die Datei wird dahin verschoben
 
-        echo "Es wird ein neuer Ordner mit dem Namen $zahl erstellt..." 
-        mkdir -p $zahl;
-        tar -rvf $Neue_Datei.tar 
-        mv $Neue_Datei.tar ./$zahl
-        #echo "$Neue_Datei.tar"
+        echo "Es wird ein neuer Ordner mit dem Namen $TARGET_DIR.tar.gz erstellt..." 
+        # mkdir -p $TARGET_DIR;
+        
+         mv $NEUE_DATEI ${temp_dir/temp/}
+        
+        #echo "$NEUE_DATEI.tar"
         echo "Der Ordner wurde erstellt und die Datei wurde gespeichert"
-        rm $Neue_Datei
+#        rm $NEUE_DATEI
 
-fi
-fi
+#fi    
+fi        
 i=$(( $i + 1 ))
-sleep 3
+#sleep 3
 echo " "
 done
 fi
+tar -czf $TARGET_DIR-$(date '+%d-%m-%y').tar.gz ${temp_dir/temp/temp}  
+rm ${temp_dir/temp/}
