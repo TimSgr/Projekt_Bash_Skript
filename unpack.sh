@@ -39,5 +39,6 @@ DATEI=`basename "$1"`
 
     fi
 fi
+find . -empty -type d -delete
 
             
