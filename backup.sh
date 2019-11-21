@@ -10,9 +10,13 @@ else
 
 ###Schritt 2 Datum einfügen
 ARG_COUNT="$(("$#"-1))"
+
 my_array=($*)
-    Array_size=${#my_array[@]}
-    TARGET_DIR=${my_array[$ARG_COUNT]}
+
+Array_size=${#my_array[@]}
+
+TARGET_DIR=${my_array[$ARG_COUNT]}
+
 i=0
 while [[ $i -le $(($ARG_COUNT-1)) ]] 
 do 
@@ -34,16 +38,13 @@ do
             else if [[ -f "$DATEI" ]]
                  then echo "Die Datei $DATEI existert und es wird versucht sie im Ordner $TARGET_DIR.tar.gz zu speichern..."
                  #sleep 2
-                      if [ -d "$TARGET_DIR.tar.gz" ]; then  
-                         echo "Der Ordner $TARGET_DIR.tar.gz existiert... und die Datei wurde darin gespeichert"
-                     #   tar -czf $T-$(date '+%d-%m-%y').tar.gz $NEUE_DATEI  
                         
                          #rm $NEUE_DATEI
                          
                          #echo "$NEUE_DATEI.tar"
                     
     #sleep 1
-                        fi
+                        
                 fi  
             fi
     fi
@@ -63,8 +64,8 @@ do
                 
 ###Schritt 4 Ordner wird erstellt wenn er noch nicht vorhanden ist und die Datei wird dahin verschoben
 
-        echo "Es wird ein neuer Ordner mit dem Namen $TARGET_DIR.tar.gz erstellt..." 
-        # mkdir -p $TARGET_DIR;
+        echo "Es wird ein neuer Ordner mit dem Namen $TARGET_DIR erstellt..." 
+        mkdir -p $TARGET_DIR;
       
         # mv $NEUE_DATEI ./$TARGET_DIR
         #mv $NEUE_DATEI ${temp_dir/temp/}
@@ -79,7 +80,7 @@ if [ -f "$NEUE_DATEI" ]
 then
 rm $NEUE_DATEI;
 fi
-tar cfzv $TARGET_DIR-$(date '+%d-%m-%y').tar.gz ${my_array[@]}
+
 i=$(( $i + 1 ))
 #sleep 3
 echo " "
@@ -89,11 +90,19 @@ echo " "
 # fi
 # else 
 
-done    
-if [ -d "$NEUE_DATEI"]
-then
-    rm $NEUE_DATEI;
+done
 
-fi
+tar cfz archive-$(date '+%d-%m-%y').tar.gz ${my_array[@]}  
+mv archive-$(date '+%d-%m-%y').tar.gz $TARGET_DIR
+
+
+# if [ -d $NEUE_DATEI ]
+# then
+#     rm $NEUE_DATEI;
+
+# fi
+
+
+
 fi
 #rm -r ${temp_dir/temp/}
