@@ -7,3 +7,6 @@ Um das Programm nutzen zu können, muss man lediglich folgenden Code eingeben:
 
 Das Programm überprüft dann, ob die Datei, von der ein Backup erstellt werden soll, existiert und ob der Zeilordner existiert,
 und wenn letzteres nicht zurtifft, wird der Zeilordner erstellt. 
+
+## bash unpack.sh *Pfad zum Archiv* *Name des Zielordners*
+## Beispiel: bash unpack.sh Dateien/archive-21-11-19.tar.gz Extahierte_Dateien
