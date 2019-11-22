@@ -19,6 +19,7 @@ DATEI=`basename "$1"`
 ### wenn diese vorhanden sind, wird versucht zu entpacken
     if [ -d "$ORDNER" ]
     then    
+    
         cd $ORDNER
         if [ -f "$DATEI" ]
         then  
@@ -31,7 +32,7 @@ DATEI=`basename "$1"`
             
             FILE=${DATEI%.*}
             EXTN=${DATEI##$FILE}
-            if [ $EXTN != "tar.gz" ]
+            if [ $EXTN != ".gz" ]
             then    
                 echo "Datei kann nicht entpackt werden"
             else
@@ -41,10 +42,6 @@ DATEI=`basename "$1"`
             if [ $ZIEL_ORDNER == "." ]
             then
                 echo "Dateien erfolgreich komprimiert in den Ordner $ORDNER"
-            
-            else if [[ $TARGET_DIR == *['!''?''='@\$%^\&*()+]* ]]
-            then 
-                echo "Unzulässiger Ordnername";
             
             else    
                 echo "Dateien erfolgreich komprimiert in den Ordner $ZIEL_ORDNER"
@@ -64,14 +61,28 @@ DATEI=`basename "$1"`
 ###Falls der Zielordner nicht vorhanden ist, wird er erstellt und das
 ###Archiv wird dahin entpackt        
         else
-            echo $ZIEL_ORDNER
+            #echo $ZIEL_ORDNER
             echo "Ordner nicht gefunden"
-            echo "Ordner wird erstellt"
-            mkdir -p $ZIEL_ORDNER 
-            cd $ZIEL_ORDNER
-            tar -xzf $DATEI 2>/dev/null
-        fi
+            if [[ $ZIEL_ORDNER == *['!''?''='@\$%^\&*()+]* ]]
+             then 
+                echo "Unzulässiger Ordnername";
+            else
+                echo "Ordner wird erstellt"
+                cd $ORDNER
+                mkdir -p $ZIEL_ORDNER 
+                cd $ZIEL_ORDNER
+                echo "Datei wird versucht zu entpacken..."
+                if [ $EXTN != ".gz" ]
+                then    
+                    echo "Datei kann nicht entpackt werden"
+                else
+                    cd $ORDNER
+                    tar -xzf $DATEI 2>/dev/null
+                    echo "Datei erfolgreich entpackt"
+                fi
+            fi
     fi
+fi
 fi
 find . -empty -type d -delete
 
